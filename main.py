@@ -1,7 +1,13 @@
+import os
+
 import telebot
+from dotenv import load_dotenv
+
+# Load env
+load_dotenv()
 
 # Demo token, it will be removed soon
-TOKEN = "6754622015:AAGZjePDFaa0sAzRJqs0kftsh14G_8uLMOg"
+TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 
 # Bot connection
 bot = telebot.TeleBot(TOKEN)
