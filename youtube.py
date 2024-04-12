@@ -34,4 +34,3 @@ class VideoDownloader:
 
     def download_video(self):
         self.current_format.download(output_path=DOWNLOAD_PATH)
-
