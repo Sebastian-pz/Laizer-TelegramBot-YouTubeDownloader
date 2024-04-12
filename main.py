@@ -6,30 +6,15 @@ import telebot
 from dotenv import load_dotenv
 from telebot import types
 
+from constants import DEFAULT_FORMAT, WELCOME_MESSAGE, HELP_MESSAGE, MENU_OPTIONS, DOWNLOAD_PATH
 from youtube import VideoDownloader
 
 # Load env
 load_dotenv()
-
-# Demo token, it will be removed soon
 TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 
 # Bot connection
 bot = telebot.TeleBot(TOKEN)
-
-WELCOME_MESSAGE = "Welcome to seb_tfa_bot, now you can start using our tools"
-HELP_MESSAGE = """Sure, you there are a few commands that you can use: 
-/start
-/download {video url}
-/horoscope
-"""
-
-MENU_OPTIONS = {
-    "DOWNLOAD": "menu_download",
-    "HOROSCOPE": "menu_horoscope",
-}
-
-DEFAULT_FORMAT = 1
 
 
 @bot.message_handler(commands=['commands-info'])
@@ -93,18 +78,18 @@ def download_video(message):
         bot.reply_to(message, f"Downloading video: {info["title"]}")
 
         def send_message():
-            videos = os.listdir('./downloads')
+            videos = os.listdir(DOWNLOAD_PATH)
             user_video = videos[0]
             response = requests.get(info["thumbnail_url"])
 
             try:
-                bot.send_video(message.chat.id, open(f"./downloads/{user_video}", "rb"),
+                bot.send_video(message.chat.id, open(f"{DOWNLOAD_PATH}/{user_video}", "rb"),
                                thumbnail=response.content,
                                caption=info["title"], width=1280, height=720)
-                rmtree('./downloads')
+                rmtree(DOWNLOAD_PATH)
             except NameError:
                 bot.send_message(message.chat.id, "ups, maybe your file is too large")
-                rmtree('./downloads')
+                rmtree(DOWNLOAD_PATH)
 
         video.current_format.on_complete(send_message())
 

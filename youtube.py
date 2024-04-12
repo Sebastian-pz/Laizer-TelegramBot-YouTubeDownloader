@@ -1,6 +1,6 @@
 from pytube import YouTube
 
-DOWNLOAD_PATH = "./downloads"
+from constants import DOWNLOAD_PATH
 
 
 def filter_formats(video_format):
